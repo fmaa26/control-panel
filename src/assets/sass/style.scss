@@ -3,6 +3,7 @@
 @import "config/colors";
 
 @import "utilities/spacing";
+@import "utilities/mixin-card.scss";
 
 @import "base/fonts";
 @import "base/global";
@@ -10,7 +11,8 @@
 @import "base/links";
 
 
+@import "components/components";
+@import "components/demo.scss";
+@import "components/button.scss";
+
 $background-color: silver;
-body {
-    background-color: $background-color;
-}

@@ -1,80 +1,129 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+var path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 module.exports = {
-   entry: {
-      app: './src/index.js',
-   },
+  entry:  {
+    'app':              './src/index.js',
+    'assets/js/banner': './src/assets/js/banner.js'
+  },
+  
+  output: {
+    path: path.join(__dirname, "/app"),
+    publicPath: '/',
+    filename: '[name].js',
+  }, 
 
-   output: {
-      path: path.join(__dirname, '/app'),
-      publicPath: '/',
-      filename: 'app.js',
-   },
-   devServer: {
-      static: {
-         directory: path.join(__dirname, './dist'),
+  devServer: {
+    contentBase: path.join(__dirname, "/app"),
+    port: 8081,
+    writeToDisk: true,
+  },
+
+
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+          }
+        ]
       },
-      compress: true,
-      historyApiFallback: true,
-      https: false,
-      open: true,
-      hot: true,
-      port: 9002,
-      devMiddleware: {
-         writeToDisk: true,
+
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader, 
+          'css-loader', 
+          'postcss-loader',
+          'sass-loader'
+        ]
       },
-   },
 
-   module: {
-      rules: [
-         {
-            test: /\.html$/,
-            use: [
-               {
-                  loader: 'html-loader',
-               },
-            ],
-         },
-         {
-            test: /\.css$/,
-            include: /node_modules/,
-            loader: 'css-loader',
-         },
-         {
-            test: /\.scss$/i,
-            use: [MiniCssExtractPlugin.loader,
-             'css-loader',
-             'postcss-loader',
-             'sass-loader'],
-         },
-         {
-            test: /\.(svg|eot|woff|woff2|ttf)$/,
-            exclude: /images/,
-            use: [
-               {
-                  loader: 'file-loader',
-                  options: {
-                     name: '[name],[ext]',
-                     outputpath: 'assets/fonts',
-                  },
-               },
-            ],
-         },
-      ],
-   },
-   plugins: [
-      new CleanWebpackPlugin(),
-      new OptimizeCssAssetsPlugin({}),
-      new MiniCssExtractPlugin({
-         filename: 'assets/css/style.css',
-      }),
+      {
+        test: /\.(png|svg|jpe?g|gif)$/,
+        exclude: /fonts/,
+        use: [
+          {
+            loader: "file-loader", 
+            options: {
+              name: '[name].[ext]',
+              outputPath: "assets/images",
+            }
+          }
+        ]
+      },
 
-      new HtmlWebpackPlugin({
-         filename: 'index.html',
-         template: './src/index.html',
-      }),
-   ],
-};
+      {
+        test: /\.(svg|eot|woff|woff2|ttf)$/,
+        exclude: /images/,
+        use: [
+          {
+            loader: "file-loader", 
+            options: {
+              name: '[name].[ext]',
+              outputPath: "assets/fonts",
+            }
+          }
+        ]
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+
+     
+    ]
+  },
+
+  plugins: [
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+
+    new HtmlWebpackPlugin({ 
+        filename: "index.html",
+        template: "./src/index.html",
+        chunks: ['app']
+    }),
+
+    new HtmlWebpackPlugin({ 
+        filename: "components/button.html",
+        template: "./src/components/button.html",
+        chunks: ['app']
+    }),
+
+    new HtmlWebpackPlugin({ 
+      filename: "components/textfield.html",
+      template: "./src/components/textfield.html",
+      chunks: ['app']
+  }),
+
+  new HtmlWebpackPlugin({ 
+    filename: "components/card.html",
+    template: "./src/components/card.html",
+    chunks: ['app']
+}),
+
+new HtmlWebpackPlugin({ 
+  filename: "components/banner.html",
+  template: "./src/components/banner.html",
+  chunks: ['app', 'assets/js/banner']
+}),
+
+    new MiniCssExtractPlugin({
+      filename: "assets/css/styles.css"}),
+
+    new OptimizeCSSAssetsPlugin({}),
+
+  ],
+  
+}
