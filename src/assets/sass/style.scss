@@ -13,17 +13,7 @@
 
 @import "components/components";
 @import "components/demo.scss";
-@import "components/button.scss";
-@import "components/list.scss";
-@import "components/tabs.scss";
-@import "components/sidebar.scss";
-@import "components/banner.scss";
-@import "components/actions.scss";
-@import "components/card.scss";
-@import "components/help.scss";
-@import "components/summary.scss";
-@import "components/upload.scss";
-@import "components/textfield.scss";
+@import "pages/index.scss";
+@import "pages/single-pages.scss";
 
-
-$background-color: silver;
+@import "hacks/add-product.scss";

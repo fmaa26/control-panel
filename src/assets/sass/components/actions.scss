@@ -27,15 +27,15 @@ $indicator-size: 10px;
     content: "";
     width: $indicator-size;
     height: $indicator-size;
-    border-radius: $indicator-size / 2;
+    border-radius: calc($indicator-size / 2);
     background-color: $color-brand;
     display:block;
     margin-left: spacing();
 }
 
 .c-action__link, .c-action__title {
-    margin-top: spacing("extra-small")/2;
-    margin-bottom: spacing("extra-small")/2;
+    margin-top:  calc(spacing("extra-small") / 2);
+    margin-bottom:  calc(spacing("extra-small") / 2);
 }
 
 .c-actions--oneline {
